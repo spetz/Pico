@@ -14,12 +14,12 @@ namespace Pico.Orders
             _clientFactory = clientFactory;
         }
 
-        public async Task<PricingDto> GetAsync(Guid orderId)
+        public async Task<DiscountDto> GetDiscountAsync(string client)
         {
-            var client = _clientFactory.CreateClient();
-            var json = await client.GetStringAsync($"http://localhost:5002/orders/{orderId}/pricing");
-            
-            return string.IsNullOrWhiteSpace(json) ? null : JsonConvert.DeserializeObject<PricingDto>(json);
+            var httpClient = _clientFactory.CreateClient();
+            var json = await httpClient.GetStringAsync($"http://localhost:5002/clients/{client}/discount");
+
+            return string.IsNullOrWhiteSpace(json) ? null : JsonConvert.DeserializeObject<DiscountDto>(json);
         }
     }
 }

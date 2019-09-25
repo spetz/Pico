@@ -1,15 +1,15 @@
 @deliveries = http://localhost:5000
 @orders = http://localhost:5001
 @pricing = http://localhost:5002
-@orderId = 7dca5314-f640-4e58-a91c-91040a88a854
+@client = vip
 
 ###
 POST {{orders}}/orders
 Content-Type: application/json
 
 {
-  "name": "order #1" 
+  "client": "{{client}}"
 }
 
 ###
-GET {{pricing}}/orders/{{orderId}}/pricing
+GET {{pricing}}/clients/{{client}}/discount

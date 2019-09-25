@@ -14,18 +14,20 @@ namespace Pico.Pricing
         public static Task Main(string[] args)
             => WebHost.CreateDefaultBuilder(args)
                 .ConfigureServices(services => services
+                    .AddTransient<DiscountService>()
                     .AddMvcCore()
                     .AddJsonFormatters())
                 .Configure(app => app.UseRouter(router => router
                     .MapGet("/", ctx => ctx.Response.WriteAsync("Pricing"))
-                    .MapGet("orders/{orderId:guid}/pricing", ctx =>
+                    .MapGet("clients/{client}/discount", ctx =>
                     {
-                        var json = JsonConvert.SerializeObject(new
-                        {
-                            price = 100
-                        });
+                        var client = ctx.GetRouteValue("client").ToString();
+                        var discount = ctx.RequestServices.GetRequiredService<DiscountService>().GetDiscount(client);
 
-                        return ctx.Response.WriteAsync(json);
+                        return ctx.Response.WriteAsync(JsonConvert.SerializeObject(new
+                        {
+                            discount
+                        }));
                     })))
                 .Build()
                 .RunAsync();
