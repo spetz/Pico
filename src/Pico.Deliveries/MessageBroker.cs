@@ -1,3 +1,4 @@
+using System;
 using System.Text;
 using Newtonsoft.Json;
 using RabbitMQ.Client;
@@ -10,11 +11,15 @@ namespace Pico.Deliveries
 
         public MessageBroker(IConnection connection)
         {
-            _connection = connection;
+            _connection = connection ?? throw new ArgumentNullException(nameof(connection));
         }
 
         public void Send(object message, string exchange, string routingKey)
         {
+            if (message == null) throw new ArgumentNullException(nameof(message));
+            if (exchange == null) throw new ArgumentNullException(nameof(exchange));
+            if (routingKey == null) throw new ArgumentNullException(nameof(routingKey));
+            
             using (var channel = _connection.CreateModel())
             {
                 var json = JsonConvert.SerializeObject(message);

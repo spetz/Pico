@@ -13,14 +13,14 @@ namespace Pico.Orders
         public OrderService(PricingServiceClient pricingServiceClient, MessageBroker messageBroker,
             ILogger<OrderService> logger)
         {
-            _pricingServiceClient = pricingServiceClient;
-            _messageBroker = messageBroker;
-            _logger = logger;
+            _pricingServiceClient = pricingServiceClient ?? throw new ArgumentNullException(nameof(pricingServiceClient));
+            _messageBroker = messageBroker ?? throw new ArgumentNullException(nameof(messageBroker));
+            _logger = logger ?? throw new ArgumentNullException(nameof(logger));
         }
 
         public async Task CreateAsync(CreateOrder command)
         {
-            if (string.IsNullOrWhiteSpace(command.Client))
+            if (string.IsNullOrWhiteSpace(command?.Client))
             {
                 throw new ArgumentException("Invalid client.", nameof(command.Client));
             }

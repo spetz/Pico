@@ -1,3 +1,4 @@
+using System;
 using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
@@ -16,8 +17,8 @@ namespace Pico.Deliveries
 
         public MessageProcessor(IConnection connection, ILogger<MessageProcessor> logger)
         {
-            _connection = connection;
-            _logger = logger;
+            _connection = connection ?? throw new ArgumentNullException(nameof(connection));
+            _logger = logger ?? throw new ArgumentNullException(nameof(logger));
             _channel = _connection.CreateModel();
         }
 

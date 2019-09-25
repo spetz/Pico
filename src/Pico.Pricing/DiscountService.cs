@@ -1,3 +1,4 @@
+using System;
 using Microsoft.Extensions.Logging;
 
 namespace Pico.Pricing
@@ -8,7 +9,7 @@ namespace Pico.Pricing
 
         public DiscountService(ILogger<DiscountService> logger)
         {
-            _logger = logger;
+            _logger = logger ?? throw new ArgumentNullException(nameof(logger));
         }
         
         public decimal GetDiscount(string client)

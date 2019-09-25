@@ -1,3 +1,4 @@
+using System;
 using System.IO;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Http;
@@ -13,6 +14,8 @@ namespace Pico.Orders
     {
         public static IServiceCollection AddServices(this IServiceCollection services)
         {
+            if (services == null) throw new ArgumentNullException(nameof(services));
+            
             IConfiguration configuration;
             using (var scope = services.BuildServiceProvider().CreateScope())
             {
